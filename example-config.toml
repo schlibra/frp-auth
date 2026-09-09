@@ -1,0 +1,33 @@
+[mysql]
+# MySQL config
+host = "127.0.0.1"
+port = 3306
+user = "root"
+pass = "123456"
+name = "frp-auth"
+
+[server]
+# Server listening host and port, GIN debug mod
+host = "0.0.0.0"
+port = 8080
+debug = false
+
+[frps-web]
+# frps web config
+host = "127.0.0.1"
+port = 7500
+# Basic Auth Token, base64encode(username + ":" + password)
+token = "VXNlcm5hbWU6UGFzc3dvcmQ="
+
+[frps]
+# frps daemon config
+host = "127.0.0.1"
+port = 7000
+
+[jwt]
+# Randome Key, generate with:  openssl rand -hex 32
+key = "<JWT-Key>"
+
+[dangerous]
+# Dangerous action config
+allowClean = false
