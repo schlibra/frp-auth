@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 export const useCollapseStore = defineStore('collapse', {
   state() {
-    const collapse = ref(false)
+    const collapse = ref(true)
     return {
       collapse,
     }
