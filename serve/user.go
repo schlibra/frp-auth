@@ -1,6 +1,7 @@
 package serve
 
 import (
+	"encoding/base64"
 	"fmt"
 	"frp-auth/constant"
 	"frp-auth/model"
@@ -41,6 +42,25 @@ func parseToken(c *gin.Context) (*model.JwtToken, model.UserTable) {
 	return data, row
 }
 
+func userLoginPubKey(c *gin.Context) {
+	type _userLoginPubKey struct {
+		Username string `json:"username"`
+	}
+	var req _userLoginPubKey
+	if err := c.ShouldBindJSON(&req); err != nil {
+		sendJson(c, 500, err.Error(), nil)
+		return
+	}
+	priKey, pubKey, err := utils.GenerateRsaKeyPair()
+	if err != nil {
+		return
+	}
+	RsaKeyStorage.Store("login_"+req.Username+"_private_key", priKey)
+	sendJson(c, 200, "公钥生成成功", responseData{
+		"public_key": pubKey,
+	})
+}
+
 func userLogin(c *gin.Context) {
 	var req model.UserLoginRequest
 	var row model.UserTable
@@ -56,7 +76,31 @@ func userLogin(c *gin.Context) {
 		sendJson(c, 401, "用户不存在", nil)
 		return
 	}
-	if utils.PasswordCheck(row.Password, req.Password) {
+	decodeString, err := base64.StdEncoding.DecodeString(req.Password)
+	if err != nil {
+		sendJson(c, 500, "Base64解析失败", responseData{
+			"err": err.Error(),
+		})
+		return
+	}
+	priKey, ok := RsaKeyStorage.LoadAndDelete("login_" + req.Username + "_private_key")
+	if !ok {
+		sendJson(c, 400, "私钥不存在", nil)
+		return
+	}
+	priKeyPem, ok := priKey.(string)
+	if !ok {
+		sendJson(c, 400, "私钥解析失败", nil)
+		return
+	}
+	data, err := utils.DecryptWithPrivateKey(decodeString, priKeyPem)
+	if err != nil {
+		sendJson(c, 400, "数据解密失败", responseData{
+			"err": err.Error(),
+		})
+		return
+	}
+	if utils.PasswordCheck(row.Password, string(data)) {
 		if row.Enable {
 			tokenVersion, err := utils.GenerateRandomString(16)
 			if err != nil {
@@ -83,6 +127,25 @@ func userLogin(c *gin.Context) {
 	}
 }
 
+func userRegisterPubKey(c *gin.Context) {
+	type _userLoginPubKey struct {
+		Username string `json:"username"`
+	}
+	var req _userLoginPubKey
+	if err := c.ShouldBindJSON(&req); err != nil {
+		sendJson(c, 500, err.Error(), nil)
+		return
+	}
+	priKey, pubKey, err := utils.GenerateRsaKeyPair()
+	if err != nil {
+		return
+	}
+	RsaKeyStorage.Store("register_"+req.Username+"_private_key", priKey)
+	sendJson(c, 200, "公钥生成成功", responseData{
+		"public_key": pubKey,
+	})
+}
+
 func userRegister(c *gin.Context) {
 	type _userRegister struct {
 		Username string `json:"username"`
@@ -103,7 +166,31 @@ func userRegister(c *gin.Context) {
 		sendJson(c, 400, "用户名已存在", nil)
 		return
 	}
-	password, err := utils.PasswordHash(req.Password)
+	decodeString, err := base64.StdEncoding.DecodeString(req.Password)
+	if err != nil {
+		sendJson(c, 500, "Base64解析失败", responseData{
+			"err": err.Error(),
+		})
+		return
+	}
+	priKey, ok := RsaKeyStorage.LoadAndDelete("register_" + req.Username + "_private_key")
+	if !ok {
+		sendJson(c, 400, "私钥不存在", nil)
+		return
+	}
+	priKeyPem, ok := priKey.(string)
+	if !ok {
+		sendJson(c, 400, "私钥解析失败", nil)
+		return
+	}
+	data, err := utils.DecryptWithPrivateKey(decodeString, priKeyPem)
+	if err != nil {
+		sendJson(c, 400, "数据解密失败", responseData{
+			"err": err.Error(),
+		})
+		return
+	}
+	password, err := utils.PasswordHash(string(data))
 	if err != nil {
 		sendJson(c, 500, err.Error(), nil)
 		return
@@ -202,7 +289,9 @@ func userLogout(c *gin.Context) {
 func InitUserApi(group *gin.RouterGroup) {
 	user := group.Group("/user")
 	user.POST("/login", userLogin)
+	user.PUT("/login", userLoginPubKey)
 	user.POST("/register", userRegister)
+	user.PUT("/register", userRegisterPubKey)
 	user.GET("/", userInfo)
 	user.PUT("/", userUpdate)
 	user.PATCH("/", userChangePwd)

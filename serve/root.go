@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"path"
 	"strings"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,8 @@ var cfg model.Config
 var db *sql.DB
 
 type responseData map[string]any
+
+var RsaKeyStorage sync.Map
 
 func sendJson(c *gin.Context, status int, msg string, data responseData) {
 	c.JSON(http.StatusOK, gin.H{

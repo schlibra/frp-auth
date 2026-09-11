@@ -6,7 +6,9 @@ import { darkTheme, zhCN } from 'naive-ui'
   <n-config-provider :theme="darkTheme" :locale="zhCN">
     <n-dialog-provider>
       <n-modal-provider>
-        <router-view class="main"></router-view>
+        <n-message-provider>
+          <router-view class="main"></router-view>
+        </n-message-provider>
       </n-modal-provider>
     </n-dialog-provider>
   </n-config-provider>

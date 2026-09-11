@@ -6,6 +6,7 @@ import HeaderComponent from '@/components/header-component.vue'
 import type Response from '@/model/response.ts'
 import { dialogError, dialogSuccess } from '@/utils/dialog.ts'
 import { useDialog } from 'naive-ui'
+import JSEncrypt from 'jsencrypt'
 
 const dialog = useDialog()
 const username = ref('')
@@ -16,14 +17,36 @@ const passwordRef = ref(null)
 const confirmPasswordRef = ref(null)
 const nicknameRef = ref(null)
 
+function encrypt(data: string, pubKey: string) {
+  const e = new JSEncrypt()
+  e.setPublicKey(pubKey)
+
+  const ed = e.encrypt(data)
+  if (!ed) {
+    dialogError(dialog, '加密失败', '数据加密失败')
+  }
+  return ed
+}
+
 const doRegister = async () => {
   if (password.value == confirmPassword.value) {
+    const res = await axios.put('/api/user/register', {
+      username: username.value,
+    })
+    let data: Response = res.data
+    if (data.status == 200) {
+      console.log(data)
+    } else {
+      dialogError(dialog, '登录失败', data.msg)
+      return
+    }
+    const _p = encrypt(password.value, data.data.public_key)
     const result = await axios.post('/api/user/register', {
       username: username.value,
-      password: password.value,
+      password: _p,
       nickname: nickname.value,
     })
-    const data: Response = result.data
+    data = result.data
     if (data.status == 200) {
       dialogSuccess(dialog, '注册成功', data.msg, () => {
         router.push('/login')
@@ -32,7 +55,7 @@ const doRegister = async () => {
       dialogError(dialog, '注册失败', data.msg)
     }
   } else {
-    dialogError(dialog, "注册失败", "两次密码不一致", ()=>{
+    dialogError(dialog, '注册失败', '两次密码不一致', () => {
       confirmPasswordRef.value.focus()
     })
   }
