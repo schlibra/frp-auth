@@ -112,42 +112,30 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-layout>
-    <n-layout-header>
-      <header-component title="个人设置"></header-component>
-    </n-layout-header>
-    <n-layout has-sider>
-
-        <menu-component></menu-component>
-
-      <n-layout-content>
-        <n-card>
-          <template #header>
-            <h3>个人设置</h3>
-          </template>
-          <n-form>
-            <n-form-item label="用户名">
-              <n-input readonly disabled placeholder="用户名" v-model:value="username"></n-input>
-            </n-form-item>
-            <n-form-item label="昵称">
-              <n-input placeholder="昵称" v-model:value="nickname"></n-input>
-              <n-button @click="updateUserInfo()">修改昵称</n-button>
-            </n-form-item>
-            <n-form-item label="密码">
-              <n-input placeholder="新密码" type="password" v-model:value="password"></n-input>
-              <n-button @click="changeUserPassword()">修改密码</n-button>
-            </n-form-item>
-            <n-form-item label="身份">
-              <n-input readonly disabled v-model:value="role"></n-input>
-            </n-form-item>
-          </n-form>
-          <template #footer>
-            <n-button size="large" type="error" @click="logoutUser()">退出登录</n-button>
-          </template>
-        </n-card>
-      </n-layout-content>
-    </n-layout>
-  </n-layout>
+  <n-card>
+    <template #header>
+      <h3>个人设置</h3>
+    </template>
+    <n-form>
+      <n-form-item label="用户名">
+        <n-input readonly disabled placeholder="用户名" v-model:value="username"></n-input>
+      </n-form-item>
+      <n-form-item label="昵称">
+        <n-input placeholder="昵称" v-model:value="nickname"></n-input>
+        <n-button @click="updateUserInfo()">修改昵称</n-button>
+      </n-form-item>
+      <n-form-item label="密码">
+        <n-input placeholder="新密码" type="password" v-model:value="password"></n-input>
+        <n-button @click="changeUserPassword()">修改密码</n-button>
+      </n-form-item>
+      <n-form-item label="身份">
+        <n-input readonly disabled v-model:value="role"></n-input>
+      </n-form-item>
+    </n-form>
+    <template #footer>
+      <n-button size="large" type="error" @click="logoutUser()">退出登录</n-button>
+    </template>
+  </n-card>
 </template>
 
 <style scoped></style>

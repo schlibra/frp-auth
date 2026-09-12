@@ -55,7 +55,6 @@ func getPortList(c *gin.Context) {
 		sendJson(c, 500, err.Error(), nil)
 		return
 	}
-	fmt.Printf("%v", clientResult)
 	if clientResult.Code != 200 {
 		sendJson(c, clientResult.Code, clientResult.Msg, nil)
 		return

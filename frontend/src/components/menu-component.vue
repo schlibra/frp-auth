@@ -35,7 +35,7 @@ const menuOptions: ComputedRef<MenuOption[]> = computed(() => [
     icon: renderIcon(KeyIcon),
   },
   {
-    label: '端口管理',
+    label: '端口规则管理',
     key: '/port',
     icon: renderIcon(PortIcon),
   },
@@ -75,7 +75,7 @@ const menuOptions: ComputedRef<MenuOption[]> = computed(() => [
         icon: renderIcon(KeyIcon),
       },
       {
-        label: '端口管理',
+        label: '端口规则管理',
         key: '/admin/port',
         icon: renderIcon(PortIcon),
       },
@@ -126,6 +126,9 @@ onMounted(async () => {
 const menuChange = (key: string) => {
   router.push(key)
 }
+setInterval(() => {
+  urlPath.value = location.pathname
+}, 100)
 </script>
 
 <template>

@@ -7,17 +7,13 @@ function goHome() {
 </script>
 
 <template>
-  <n-layout>
-    <n-layout-content>
-      <n-card class="main">
-        <n-result status="404" title="404 页面不存在">
-          <template #default>
-            <n-button size="large" @click="goHome">返回首页</n-button>
-          </template>
-        </n-result>
-      </n-card>
-    </n-layout-content>
-  </n-layout>
+  <n-card class="main">
+    <n-result status="404" title="404 页面不存在">
+      <template #default>
+        <n-button size="large" @click="goHome">返回首页</n-button>
+      </template>
+    </n-result>
+  </n-card>
 </template>
 
 <style scoped>

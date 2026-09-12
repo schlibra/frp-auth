@@ -94,27 +94,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-layout>
-    <n-layout-header>
-      <header-component title="客户端管理"></header-component>
-    </n-layout-header>
-    <n-layout has-sider>
-
-        <menu-component></menu-component>
-
-      <n-layout-content>
-        <n-card>
-          <template #header>
-            <h3>客户端管理</h3>
-          </template>
-          <n-space vertical>
-            <n-button type="primary" size="large" @click="loadClient()">刷新数据</n-button>
-            <n-data-table :columns="columns" :data="clientList"></n-data-table>
-          </n-space>
-        </n-card>
-      </n-layout-content>
-    </n-layout>
-  </n-layout>
+  <n-card>
+    <template #header>
+      <h3>客户端管理</h3>
+    </template>
+    <n-space vertical>
+      <n-button type="primary" size="large" @click="loadClient()">刷新数据</n-button>
+      <n-data-table :columns="columns" :data="clientList"></n-data-table>
+    </n-space>
+  </n-card>
 </template>
 
 <style scoped></style>

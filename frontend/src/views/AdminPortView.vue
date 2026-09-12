@@ -189,25 +189,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-layout>
-    <n-layout-header>
-      <header-component title="管理员 - 规则管理"></header-component>
-    </n-layout-header>
-    <n-layout has-sider>
-      <menu-component></menu-component>
-      <n-layout-content>
-        <n-card>
-          <template #header>
-            <h3>管理员 - 规则管理</h3>
-          </template>
-          <n-flex>
-            <n-button @click="openCreateModal()" size="large" type="primary">创建端口规则</n-button>
-            <n-data-table :columns="columns" :data="portList"></n-data-table>
-          </n-flex>
-        </n-card>
-      </n-layout-content>
-    </n-layout>
-  </n-layout>
+  <n-card>
+    <template #header>
+      <h3>管理员 - 规则管理</h3>
+    </template>
+    <n-flex>
+      <n-button @click="openCreateModal()" size="large" type="primary">创建端口规则</n-button>
+      <n-data-table :columns="columns" :data="portList"></n-data-table>
+    </n-flex>
+  </n-card>
   <n-modal v-model:show="modalShow">
     <n-card style="width: 400px">
       <template #header>

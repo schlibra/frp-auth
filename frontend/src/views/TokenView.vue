@@ -225,29 +225,17 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-layout>
-    <n-layout-header>
-      <header-component title="Token管理"></header-component>
-    </n-layout-header>
-    <n-layout has-sider>
-
-        <menu-component></menu-component>
-
-      <n-layout-content>
-        <n-card>
-          <template #header>
-            <h3>Token管理</h3>
-          </template>
-          <n-space vertical>
-            <n-button size="large" type="primary" @click="tokenModalShow = true"
-              >创建Token</n-button
-            >
-            <n-data-table :columns="columns" :data="tokenList"> </n-data-table>
-          </n-space>
-        </n-card>
-      </n-layout-content>
-    </n-layout>
-  </n-layout>
+  <n-card>
+    <template #header>
+      <h3>Token管理</h3>
+    </template>
+    <n-space vertical>
+      <n-button size="large" type="primary" @click="tokenModalShow = true"
+        >创建Token</n-button
+      >
+      <n-data-table :columns="columns" :data="tokenList"> </n-data-table>
+    </n-space>
+  </n-card>
   <n-modal v-model:show="tokenModalShow">
     <n-card style="width: 400px">
       <template #header>

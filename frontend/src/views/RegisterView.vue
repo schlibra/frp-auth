@@ -63,52 +63,42 @@ const doRegister = async () => {
 </script>
 
 <template>
-  <n-layout>
-    <n-layout-header>
-      <header-component title="注册"></header-component>
-    </n-layout-header>
-    <n-layout-content>
-      <n-flex justify="center" align="center" style="height: calc(100vh - 200px)">
-        <n-card size="large" style="max-width: 600px">
-          <template #header>
-            <span>注册账号</span>
-          </template>
-          <n-form>
-            <n-form-item label="用户名">
-              <n-input v-model:value="username" @keydown.enter="passwordRef.focus()"></n-input>
-            </n-form-item>
-            <n-form-item label="密码">
-              <n-input
-                ref="passwordRef"
-                type="password"
-                v-model:value="password"
-                @keydown.enter="confirmPasswordRef.focus()"
-              ></n-input>
-            </n-form-item>
-            <n-form-item label="确认密码">
-              <n-input
-                ref="confirmPasswordRef"
-                type="password"
-                v-model:value="confirmPassword"
-                @keydown.enter="nicknameRef.focus()"
-              ></n-input>
-            </n-form-item>
-            <n-form-item label="昵称">
-              <n-input
-                ref="nicknameRef"
-                v-model:value="nickname"
-                @keydown.enter="doRegister()"
-              ></n-input>
-            </n-form-item>
-          </n-form>
-          <template #footer>
-            <n-button @click="doRegister()" size="large" type="primary">注册</n-button>
-          </template>
-        </n-card>
-      </n-flex>
-    </n-layout-content>
-    <n-layout-footer></n-layout-footer>
-  </n-layout>
+  <n-card size="large" style="max-width: 600px">
+    <template #header>
+      <span>注册账号</span>
+    </template>
+    <n-form>
+      <n-form-item label="用户名">
+        <n-input v-model:value="username" @keydown.enter="passwordRef.focus()"></n-input>
+      </n-form-item>
+      <n-form-item label="密码">
+        <n-input
+          ref="passwordRef"
+          type="password"
+          v-model:value="password"
+          @keydown.enter="confirmPasswordRef.focus()"
+        ></n-input>
+      </n-form-item>
+      <n-form-item label="确认密码">
+        <n-input
+          ref="confirmPasswordRef"
+          type="password"
+          v-model:value="confirmPassword"
+          @keydown.enter="nicknameRef.focus()"
+        ></n-input>
+      </n-form-item>
+      <n-form-item label="昵称">
+        <n-input
+          ref="nicknameRef"
+          v-model:value="nickname"
+          @keydown.enter="doRegister()"
+        ></n-input>
+      </n-form-item>
+    </n-form>
+    <template #footer>
+      <n-button @click="doRegister()" size="large" type="primary">注册</n-button>
+    </template>
+  </n-card>
 </template>
 
 <style scoped></style>

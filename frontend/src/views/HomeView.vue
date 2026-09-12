@@ -5,7 +5,7 @@ import {
   KeyOutline as TokenIcon,
   GlobeOutline as PortIcon,
   DesktopOutline as ClientIcon,
-  RepeatOutline as ProxyIcon
+  RepeatOutline as ProxyIcon,
 } from '@vicons/ionicons5'
 import { onMounted, ref } from 'vue'
 import { getToken } from '@/utils/token.ts'
@@ -78,53 +78,42 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-layout>
-    <n-layout-header>
-      <header-component title="首页"></header-component>
-    </n-layout-header>
-    <n-layout has-sider>
-      <menu-component></menu-component>
-      <n-layout-content>
-        <n-flex justify="center" align="center" style="height: 40%">
-          <n-card style="max-width: 600px">
-            <template #header>
-              <h3>首页</h3>
-            </template>
-            <n-flex>
-              <n-statistic label="Token数量" :value="tokenCount">
-                <template #prefix>
-                  <n-icon>
-                    <TokenIcon />
-                  </n-icon>
-                </template>
-              </n-statistic>
-              <n-statistic label="端口规则数量" :value="portCount">
-                <template #prefix>
-                  <n-icon>
-                    <PortIcon />
-                  </n-icon>
-                </template>
-              </n-statistic>
-              <n-statistic label="客户端数量" :value="clientCount">
-                <template #prefix>
-                  <n-icon>
-                    <ClientIcon />
-                  </n-icon>
-                </template>
-              </n-statistic>
-              <n-statistic label="映射数量" :value="proxyCount">
-                <template #prefix>
-                  <n-icon>
-                    <ProxyIcon />
-                  </n-icon>
-                </template>
-              </n-statistic>
-            </n-flex>
-          </n-card>
-        </n-flex>
-      </n-layout-content>
-    </n-layout>
-  </n-layout>
+  <n-card>
+    <template #header>
+      <h3>首页</h3>
+    </template>
+    <n-flex>
+      <n-statistic label="Token数量" :value="tokenCount">
+        <template #prefix>
+          <n-icon>
+            <TokenIcon />
+          </n-icon>
+        </template>
+      </n-statistic>
+      <n-statistic label="端口规则数量" :value="portCount">
+        <template #prefix>
+          <n-icon>
+            <PortIcon />
+          </n-icon>
+        </template>
+      </n-statistic>
+      <n-statistic label="客户端数量" :value="clientCount">
+        <template #prefix>
+          <n-icon>
+            <ClientIcon />
+          </n-icon>
+        </template>
+      </n-statistic>
+      <n-statistic label="映射数量" :value="proxyCount">
+        <template #prefix>
+          <n-icon>
+            <ProxyIcon />
+          </n-icon>
+        </template>
+      </n-statistic>
+    </n-flex>
+  </n-card>
+
 </template>
 
 <style scoped></style>
