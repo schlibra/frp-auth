@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import HeaderComponent from '@/components/header-component.vue'
-import MenuComponent from '@/components/menu-component.vue'
 import { h, onMounted, ref } from 'vue'
 import axios from 'axios'
 import type Response from '@/model/response.ts'
@@ -8,9 +6,10 @@ import { dialogError } from '@/utils/dialog.ts'
 import { type DataTableColumns, NButton, NSpace, NSwitch, useDialog } from 'naive-ui'
 import { getToken } from '@/utils/token.ts'
 import router from '@/router'
+import { useTokensStore } from '@/stores'
 
 const dialog = useDialog()
-const tokenList = ref([])
+const tokens = useTokensStore()
 const tokenModalShow = ref(false)
 const newTokenName = ref('')
 const frpConfig = ref('')
@@ -185,7 +184,7 @@ async function loadTokens() {
   })
   const data: Response = res.data
   if (data.status == 200) {
-    tokenList.value = data.data.tokens
+    tokens.tokens = data.data.tokens
   } else if (data.status == 401) {
     router.push('/login')
   } else {
@@ -233,7 +232,7 @@ onMounted(async () => {
       <n-button size="large" type="primary" @click="tokenModalShow = true"
         >创建Token</n-button
       >
-      <n-data-table :columns="columns" :data="tokenList"> </n-data-table>
+      <n-data-table :columns="columns" :data="tokens.tokens"> </n-data-table>
     </n-space>
   </n-card>
   <n-modal v-model:show="tokenModalShow">

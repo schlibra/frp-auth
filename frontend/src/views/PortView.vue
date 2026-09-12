@@ -8,9 +8,10 @@ import type Response from '@/model/response.ts'
 import { type DataTableColumn, NButton, NSpace, useDialog } from 'naive-ui'
 import { dialogError } from '@/utils/dialog.ts'
 import router from '@/router'
+import { usePortsStore } from '@/stores'
 
 const dialog = useDialog()
-const portData = ref([])
+const ports = usePortsStore()
 const modalShow = ref(false)
 const createPort = ref(false)
 const modalPortId = ref(0)
@@ -169,7 +170,7 @@ async function loadPort() {
   })
   const data: Response = res.data
   if (data.status == 200) {
-    portData.value = data.data.ports
+    ports.ports = data.data.ports
   } else if (data.status == 401) {
     router.push('/login')
   } else {
@@ -189,7 +190,7 @@ onMounted(async () => {
     </template>
     <n-flex>
       <n-button @click="openCreateModal()" size="large" type="primary">创建端口规则</n-button>
-      <n-data-table :columns="columns" :data="portData"></n-data-table>
+      <n-data-table :columns="columns" :data="ports.ports"></n-data-table>
     </n-flex>
   </n-card>
   <n-modal v-model:show="modalShow">

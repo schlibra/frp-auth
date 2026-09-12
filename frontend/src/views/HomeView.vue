@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import HeaderComponent from '@/components/header-component.vue'
-import MenuComponent from '@/components/menu-component.vue'
 import {
   KeyOutline as TokenIcon,
   GlobeOutline as PortIcon,
@@ -14,12 +12,14 @@ import type Response from '@/model/response.ts'
 import { dialogError } from '@/utils/dialog.ts'
 import { useDialog } from 'naive-ui'
 import router from '@/router'
+import { useTokensStore, usePortsStore, useClientsStore } from '@/stores'
+import { useProxiesStore } from '@/stores/proxies.ts'
 
 const dialog = useDialog()
-const tokenCount = ref(0)
-const portCount = ref(0)
-const clientCount = ref(0)
-const proxyCount = ref(0)
+const tokens = useTokensStore()
+const ports = usePortsStore()
+const clients = useClientsStore()
+const proxies = useProxiesStore()
 
 onMounted(async () => {
   let res = await axios.get('/api/token', {
@@ -29,7 +29,7 @@ onMounted(async () => {
   })
   let data: Response = res.data
   if (data.status == 200) {
-    tokenCount.value = data.data.tokens.length
+    tokens.tokens = data.data.tokens
   } else if (data.status == 401) {
     router.push('/login')
   } else {
@@ -42,7 +42,7 @@ onMounted(async () => {
   })
   data = res.data
   if (data.status == 200) {
-    portCount.value = data.data.ports.length
+    ports.ports = data.data.ports
   } else if (data.status == 401) {
     router.push('/login')
   } else {
@@ -55,7 +55,7 @@ onMounted(async () => {
   })
   data = res.data
   if (data.status == 200) {
-    clientCount.value = data.data.clients.length
+    clients.clients = data.data.clients
   } else if (data.status == 401) {
     router.push('/login')
   } else {
@@ -68,7 +68,7 @@ onMounted(async () => {
   })
   data = res.data
   if (data.status == 200) {
-    proxyCount.value = data.data.proxies.length
+    proxies.proxies = data.data.proxies
   } else if (data.status == 401) {
     router.push('/login')
   } else {
@@ -83,28 +83,28 @@ onMounted(async () => {
       <h3>首页</h3>
     </template>
     <n-flex>
-      <n-statistic label="Token数量" :value="tokenCount">
+      <n-statistic label="Token数量" :value="tokens.count">
         <template #prefix>
           <n-icon>
             <TokenIcon />
           </n-icon>
         </template>
       </n-statistic>
-      <n-statistic label="端口规则数量" :value="portCount">
+      <n-statistic label="端口规则数量" :value="ports.count">
         <template #prefix>
           <n-icon>
             <PortIcon />
           </n-icon>
         </template>
       </n-statistic>
-      <n-statistic label="客户端数量" :value="clientCount">
+      <n-statistic label="客户端数量" :value="clients.count">
         <template #prefix>
           <n-icon>
             <ClientIcon />
           </n-icon>
         </template>
       </n-statistic>
-      <n-statistic label="映射数量" :value="proxyCount">
+      <n-statistic label="映射数量" :value="proxies.count">
         <template #prefix>
           <n-icon>
             <ProxyIcon />
@@ -113,7 +113,6 @@ onMounted(async () => {
       </n-statistic>
     </n-flex>
   </n-card>
-
 </template>
 
 <style scoped></style>

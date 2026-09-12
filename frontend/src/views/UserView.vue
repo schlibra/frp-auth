@@ -10,6 +10,7 @@ import type UserInfo from '@/model/userInfo.ts'
 import { useDialog } from 'naive-ui'
 import { removeToken } from '@/utils/token.ts'
 
+const userId = ref("")
 const username = ref('')
 const nickname = ref('')
 const password = ref('')
@@ -27,6 +28,7 @@ async function loadUserInfo() {
     const userData: UserInfo = data.data
     username.value = userData.username
     nickname.value = userData.nickname
+    userId.value = userData.userId
     role.value = userData.role == 'admin' ? '管理员' : '普通用户'
   } else if (data.status == 401) {
     router.push('/login')
@@ -117,8 +119,11 @@ onMounted(async () => {
       <h3>个人设置</h3>
     </template>
     <n-form>
+      <n-form-item label="用户ID">
+        <n-input readonly disabled placeholder="用户ID" :value="userId"></n-input>
+      </n-form-item>
       <n-form-item label="用户名">
-        <n-input readonly disabled placeholder="用户名" v-model:value="username"></n-input>
+        <n-input readonly disabled placeholder="用户名" :value="username"></n-input>
       </n-form-item>
       <n-form-item label="昵称">
         <n-input placeholder="昵称" v-model:value="nickname"></n-input>

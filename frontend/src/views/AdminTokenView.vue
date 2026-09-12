@@ -8,8 +8,9 @@ import type Response from '@/model/response.ts'
 import { type DataTableColumn, NButton, NSpace, NSwitch, useDialog } from 'naive-ui'
 import { dialogError } from '@/utils/dialog.ts'
 import router from '@/router'
+import { useAdminTokensStore } from '@/stores'
 
-const tokenList = ref([])
+const tokens = useAdminTokensStore()
 const dialog = useDialog()
 const modalShow = ref(false)
 const createToken = ref(false)
@@ -223,7 +224,7 @@ async function loadToken() {
   })
   const data: Response = res.data
   if (data.status === 200) {
-    tokenList.value = data.data.tokens
+    tokens.tokens = data.data.tokens
   } else if (data.status == 401) {
     router.push('/login')
   } else if (data.status == 403) {
@@ -245,7 +246,7 @@ onMounted(async () => {
     </template>
     <n-space vertical>
       <n-button type="primary" size="large" @click="openCreateModal()">创建Token</n-button>
-      <n-data-table :columns="columns" :data="tokenList"></n-data-table>
+      <n-data-table :columns="columns" :data="tokens.tokens"></n-data-table>
     </n-space>
   </n-card>
   <n-modal v-model:show="modalShow">

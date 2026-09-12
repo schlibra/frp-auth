@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import HeaderComponent from '@/components/header-component.vue'
-import MenuComponent from '@/components/menu-component.vue'
 import { h, onMounted, type Ref, ref } from 'vue'
 import axios from 'axios'
 import { getToken } from '@/utils/token.ts'
@@ -8,9 +6,10 @@ import type Response from '@/model/response.ts'
 import { type DataTableColumn, NButton, NSpace, useDialog } from 'naive-ui'
 import { dialogError } from '@/utils/dialog.ts'
 import router from '@/router'
+import { useAdminPortsStore } from '@/stores'
 
 const dialog = useDialog()
-const portList = ref([])
+const ports = useAdminPortsStore()
 const modalShow = ref(false)
 const createPort = ref(false)
 const modalPortId = ref(0)
@@ -173,7 +172,7 @@ async function loadPort() {
   })
   const data: Response = res.data
   if (data.status === 200) {
-    portList.value = data.data.ports
+    ports.ports = data.data.ports
   } else if (data.status == 401) {
     router.push('/login')
   } else if (data.status == 403) {
@@ -195,7 +194,7 @@ onMounted(async () => {
     </template>
     <n-flex>
       <n-button @click="openCreateModal()" size="large" type="primary">创建端口规则</n-button>
-      <n-data-table :columns="columns" :data="portList"></n-data-table>
+      <n-data-table :columns="columns" :data="ports.ports"></n-data-table>
     </n-flex>
   </n-card>
   <n-modal v-model:show="modalShow">

@@ -10,9 +10,10 @@ import type Response from '@/model/response.ts'
 import { dialogError } from '@/utils/dialog.ts'
 import { time } from 'naive-ui/es/time-picker/src/utils'
 import { calcSize } from '@/utils/size.ts'
+import { useAdminProxiesStore } from '@/stores'
 
 const dialog = useDialog()
-const proxyList = ref([])
+const proxies = useAdminProxiesStore()
 const columns: Ref<DataTableColumn[]> = ref([
   {
     title: '状态',
@@ -127,7 +128,7 @@ async function loadProxy() {
   })
   const data: Response = res.data
   if (data.status === 200) {
-    proxyList.value = data.data.proxies
+    proxies.proxies = data.data.proxies
   } else {
     dialogError(dialog, '数据获取失败', data.msg)
   }
@@ -145,7 +146,7 @@ onMounted(async () => {
     </template>
     <n-flex>
       <n-button type="primary" size="large" @click="loadProxy()">刷新数据</n-button>
-      <n-data-table :columns="columns" :data="proxyList"></n-data-table>
+      <n-data-table :columns="columns" :data="proxies.proxies"></n-data-table>
     </n-flex>
   </n-card>
 </template>

@@ -8,8 +8,9 @@ import type Response from '@/model/response.ts'
 import { type DataTableColumn, NButton, NSpace, NSwitch, useDialog } from 'naive-ui'
 import { dialogError } from '@/utils/dialog.ts'
 import router from '@/router'
+import { useAdminUsersStore } from '@/stores'
 
-const userList = ref([])
+const users = useAdminUsersStore()
 const dialog = useDialog()
 const modalShow = ref(false)
 const createUser = ref(false)
@@ -123,7 +124,7 @@ async function loadUser() {
   })
   const data: Response = res.data
   if (data.status === 200) {
-    userList.value = data.data.users
+    users.users = data.data.users
   } else if (data.status == 401) {
     router.push('/login')
   } else if (data.status == 403) {
@@ -248,7 +249,7 @@ onMounted(async () => {
     </template>
     <n-space vertical>
       <n-button @click="openCreateModal()" size="large" type="primary">创建用户</n-button>
-      <n-data-table :columns="columns" :data="userList"> </n-data-table>
+      <n-data-table :columns="columns" :data="users.users"> </n-data-table>
     </n-space>
   </n-card>
   <n-modal v-model:show="modalShow">

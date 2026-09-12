@@ -7,9 +7,10 @@ import axios from 'axios'
 import { getToken } from '@/utils/token.ts'
 import { type DataTableColumn, NTag, useDialog } from 'naive-ui'
 import { dialogError } from '@/utils/dialog.ts'
+import { useAdminClientsStore } from '@/stores'
 
 const dialog = useDialog()
-const clientList = ref([])
+const clients = useAdminClientsStore()
 const columns: Ref<DataTableColumn[]> = ref([
   {
     title: '状态',
@@ -82,7 +83,7 @@ async function loadClient() {
   })
   const data: Response = res.data
   if (data.status === 200) {
-    clientList.value = data.data.clients
+    clients.clients = data.data.clients
   } else {
     dialogError(dialog, '数据获取失败', data.msg)
   }
@@ -100,7 +101,7 @@ onMounted(async () => {
     </template>
     <n-flex>
       <n-button type="primary" size="large" @click="loadClient()">刷新数据</n-button>
-      <n-data-table :columns="columns" :data="clientList"></n-data-table>
+      <n-data-table :columns="columns" :data="clients.clients"></n-data-table>
     </n-flex>
   </n-card>
 </template>
