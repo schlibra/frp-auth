@@ -28,7 +28,7 @@ function copy() {
     </template>
     <n-form>
       <n-form-item label="前置配置">
-        <n-input v-model:value="config.preConfig" type="textarea" rows="5"></n-input>
+        <n-input v-model:value="config.preConfig" type="textarea" rows="4"></n-input>
       </n-form-item>
       <n-flex>
         <n-form-item label="映射名称">
@@ -53,8 +53,9 @@ function copy() {
     </n-form>
     <template #footer>
       <n-space justify="center">
-        <n-button type="primary" size="large" @click="copy()">复制</n-button>
-        <n-button type="info" size="large" @click="config.clear()">清空</n-button>
+        <n-button type="success" size="large" @click="config.next()">编辑下一条</n-button>
+        <n-button type="info" size="large" @click="copy()">复制</n-button>
+        <n-button type="warning" size="large" @click="config.clear()">清空</n-button>
       </n-space>
     </template>
   </n-card>

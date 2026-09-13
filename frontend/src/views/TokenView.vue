@@ -6,10 +6,11 @@ import { dialogError } from '@/utils/dialog.ts'
 import { type DataTableColumns, NButton, NSpace, NSwitch, useDialog } from 'naive-ui'
 import { getToken } from '@/utils/token.ts'
 import router from '@/router'
-import { useTokensStore } from '@/stores'
+import { useConfigStore, useTokensStore } from '@/stores'
 
 const dialog = useDialog()
 const tokens = useTokensStore()
+const config = useConfigStore()
 const tokenModalShow = ref(false)
 const newTokenName = ref('')
 const frpConfig = ref('')
@@ -212,10 +213,15 @@ async function createToken() {
   newTokenName.value = ''
   tokenModalShow.value = false
 }
+function goEdit() {
+  config.clear()
+  config.preConfig = frpConfig.value
+  router.push("/config")
+}
 
 function copyConfig() {
   frpConfigText.value.select()
-  document.execCommand("copy")
+  document.execCommand('copy')
 }
 
 onMounted(async () => {
@@ -229,9 +235,7 @@ onMounted(async () => {
       <h3>Token管理</h3>
     </template>
     <n-space vertical>
-      <n-button size="large" type="primary" @click="tokenModalShow = true"
-        >创建Token</n-button
-      >
+      <n-button size="large" type="primary" @click="tokenModalShow = true">创建Token</n-button>
       <n-data-table :columns="columns" :data="tokens.tokens"> </n-data-table>
     </n-space>
   </n-card>
@@ -265,8 +269,9 @@ onMounted(async () => {
       </n-form>
       <template #footer>
         <n-space justify="end">
+          <n-button type="success" size="large" @click="goEdit()">去编辑配置</n-button>
           <n-button type="info" size="large" @click="copyConfig()">复制</n-button>
-          <n-button type="primary" size="large" @click="configModalShow = false">确定</n-button>
+          <n-button type="default" size="large" @click="configModalShow = false">确定</n-button>
         </n-space>
       </template>
     </n-card>

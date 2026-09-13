@@ -30,6 +30,14 @@ remotePort = "${remotePort.value}"
       localPort.value = ""
       remotePort.value = ""
     }
+    const next = () => {
+      preConfig.value = result.value
+      proxyName.value = ''
+      proxyType.value = ''
+      localIP.value = ''
+      localPort.value = ''
+      remotePort.value = ''
+    }
     return {
       preConfig,
       proxyName,
@@ -39,6 +47,7 @@ remotePort = "${remotePort.value}"
       remotePort,
       result,
       clear,
+      next,
     }
   },
   persist: true,
